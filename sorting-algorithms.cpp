@@ -1,6 +1,8 @@
+//TO-DO: selection sort, user decides input sizes, error catching
+
 //This program compares the running time of 4 different sorting algorithms at input sizes n ranging from
 //1000 to 20000. The numbers to be sorted are generated using the rand() function and stored in a two dimensional
-//vector of ints
+//vector of ints.
 
 #include "stdafx.h"
 #include "math.h"
@@ -9,10 +11,13 @@
 #include <vector>
 #include <ctime>
 #include <iomanip>
+#include <string>
 
 using namespace std;
 
+string IO(int);
 int PARTITION(vector<int> &, int, int);
+void selectionSort(vector<int> &, int);
 void QUICKSORT(vector<int> &, int, int);
 void INSERTION_SORT(vector<int> &, int);
 void BUILD_MAX_HEAP(vector<int> &, int);
@@ -22,8 +27,7 @@ int PARENT(int);
 int LEFT(int);
 int RIGHT(int);
 
-int main()
-{	
+int main() {	
 	const int nStart = 1000;
 	const int nFinish = 20000;
 	const int delta = 1000;
@@ -102,7 +106,27 @@ int main()
 	return 0;
 }
 
-//ALG1 working
+//input and output
+string IO(int choice) {
+	string result;
+	
+	switch (choice) {
+	case 1:
+		break;
+	case 2:
+		break;
+	case 3:
+		break;
+	case 4:
+		break;
+	case 5:
+		break;
+	default:
+		return "Invalid input. Please try again.";
+	}
+}
+
+//insertion sort
 void INSERTION_SORT(vector<int> &A, int n) {
 	for (int j = 1; j < n; j++) {
 		int key = A[j];
@@ -115,7 +139,24 @@ void INSERTION_SORT(vector<int> &A, int n) {
 	}//end for
 }
 
-//ALG2 working
+//selection sort
+void selectionSort(vector<int> &A, int n) {
+	for (int i = 0; i <= n - 2; i++) //i in 0 to n - 2
+	{
+		int maxIndex = i;
+		for (int j = i + 1; j <= n - 1; j++)
+		{
+			if (A[j] > A[maxIndex])
+			{
+				maxIndex = j;
+			}//end if
+			swap(A[i], A[maxIndex]);
+		}//end j for
+	}// end i for
+	return a;
+}
+
+//heap sort
 void HEAPSORT(vector<int> &A, int n) {
 	BUILD_MAX_HEAP(A, n);
 	for (int i = n - 1; i >= 0; i--) {
@@ -157,7 +198,14 @@ int RIGHT(int i) {
 	return (2 * i) + 2;
 }
 
-//ALG3 working
+//quick sort
+void QUICKSORT(vector<int> &A, int left, int right) {
+	if (left < right) {
+		int q = PARTITION(A, left, right);
+		QUICKSORT(A, left, q - 1);
+		QUICKSORT(A, q + 1, right);
+	} //end if
+}
 int PARTITION(vector<int> &A, int p, int r) {
 	int x = A[r];
 	int i = p - 1;
@@ -170,13 +218,7 @@ int PARTITION(vector<int> &A, int p, int r) {
 	swap(A[i + 1], A[r]);
 	return i + 1;
 }
-void QUICKSORT(vector<int> &A, int left, int right) {
-	if (left < right) {
-		int q = PARTITION(A, left, right);
-		QUICKSORT(A, left, q - 1);
-		QUICKSORT(A, q + 1, right);
-	} //end if
-}
+
 
 
 
