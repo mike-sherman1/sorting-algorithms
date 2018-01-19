@@ -2,7 +2,6 @@
 //1000 to 20000. The numbers to be sorted are generated using the rand() function and stored in a two dimensional
 //vector of ints
 
-#include "stdafx.h"
 #include "math.h"
 #include <iostream>
 #include <algorithm>
