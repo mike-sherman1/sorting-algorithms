@@ -4,7 +4,6 @@
 //1000 to 20000. The numbers to be sorted are generated using the rand() function and stored in a two dimensional
 //vector of ints.
 
-#include "stdafx.h"
 #include "math.h"
 #include <iostream>
 #include <algorithm>
@@ -15,119 +14,86 @@
 
 using namespace std;
 
-string IO(int);
-int PARTITION(vector<int> &, int, int);
+string measure(vector<vector<int>> &A, vector<int> &B, void (*currentFunction)(vector<int> &, int, int), int nStart, int nFinish, int delta, int m);
+int partition(vector<int> &, int, int);
 void selectionSort(vector<int> &, int);
-void QUICKSORT(vector<int> &, int, int);
-void INSERTION_SORT(vector<int> &, int);
-void BUILD_MAX_HEAP(vector<int> &, int);
-void HEAPSORT(vector<int> &, int);
-void MAX_HEAPIFY(vector<int> &, int, int);
-int PARENT(int);
-int LEFT(int);
-int RIGHT(int);
+void quicksort(vector<int> &, int, int);
+void insertionSort(vector<int> &, int);
+void buildMaxHeap(vector<int> &, int);
+void heapsort(vector<int> &, int);
+void maxHeapify(vector<int> &, int, int);
+int parent(int);
+int left(int);
+int right(int);
 
 int main() {	
-	const int nStart = 1000;
-	const int nFinish = 20000;
-	const int delta = 1000;
-	const int m = 10;
-	vector<vector<int>> A;
-	vector<int> B;
-	clock_t start;
-	vector<double> durations;
-	double average = 0;
+	int nStart = 1000;
+	int nFinish = 20000;
+	int delta = 1000;
+	int m = 10;
+	vector<vector<int>> master;
+	vector<int> currentSim;
+	string result = "";
+	bool exit = false;
+
+	//main menu
+	cout << "Welcome to the sorting algorithms tester v1.1.\nTo begin, let's set up the parameters of the simulations.\n\n";
+	cout << "Please enter the lower limit of the input size, or just press enter for default value (1000): ";
+	//if no input entered, keep default 
+	cin >> nStart;
 	
-	//populate master array
+	while (!exit) {
+		 
+	}
+	
+
+	return 0;
+}
+
+//populate master array
+void fillArray(vector<vector<int>> &master, int m, int nFinish) {
 	for (int i = 0; i < m; i++) {
 		vector<int> row;
 		for (int j = 0; j < nFinish; j++) {
 			row.push_back(rand());
 		}
-		A.push_back(row);
+		master.push_back(row);
 	}
-
-	//measurements for ALG1: insertion sort
-	for (int n = nStart; n <= nFinish; n += delta) {
-		for (int i = 0; i < m; i++) {
-			B = A[i];
-			start = clock();
-			INSERTION_SORT(B, n);
-			durations.push_back((((clock() - start) / (double)CLOCKS_PER_SEC))* 1000);
-		}//end m for
-		//sum durations
-		double sum = 0;
-		for (int i = 0; i < m; i++) {
-			sum += durations[i];
-		}
-		average = (sum / (double)m);
-		cout << "Average running time in ms, alg 1, with input size " << n << ": " << average << endl;
-		vector<double>().swap(durations);   // clear durations
-	}//end n for
-	cout << "---------------------------------------------------\n";
-	
-	 //measurements for ALG2: heap sort
-	for (int n = nStart; n <= nFinish; n += delta) {
-		for (int i = 0; i < m; i++) {
-			B = A[i];
-			start = clock();
-			HEAPSORT(B, n);
-			durations.push_back((((clock() - start) / (double)CLOCKS_PER_SEC)) * 1000);
-		}//end m for
-		 //sum durations
-		double sum = 0;
-		for (int i = 0; i < m; i++) {
-			sum += durations[i];
-		}
-		average = (sum / (double)m);
-		cout << "Average running time in ms, alg 2, with input size " << n << ": " << average << endl;
-		vector<double>().swap(durations);   // clear durations
-	}//end n for
-	cout << "---------------------------------------------------\n";
-	
-	//measurements for ALG3: quick sort
-	for (int n = nStart; n <= nFinish; n += delta) {
-		for (int i = 0; i < m; i++) {
-			B = A[i];
-			start = clock();
-			QUICKSORT(B, 0, n-1);
-			durations.push_back((((clock() - start) / (double)CLOCKS_PER_SEC)) * 1000);
-		}//end m for
-		 //sum durations
-		double sum = 0;
-		for (int i = 0; i < m; i++) {
-			sum += durations[i];
-		}
-		average = (sum / (double)m);
-		cout << "Average running time in ms, alg 3, with input size " << n << ": " << average << endl;
-		vector<double>().swap(durations);   // clear durations
-	}//end n for
-
-	return 0;
 }
 
-//input and output
-string IO(int choice) {
-	string result;
+//measure
+string measure(vector<vector<int>> &A, vector<int> &B, void (*currentFunction)(vector<int> &, int, int), int nStart, int nFinish, int delta, int m) {
+	vector<double> durations;
+	clock_t start;
 	
-	switch (choice) {
-	case 1:
-		break;
-	case 2:
-		break;
-	case 3:
-		break;
-	case 4:
-		break;
-	case 5:
-		break;
-	default:
-		return "Invalid input. Please try again.";
-	}
+	for (int n = nStart; n <= nFinish; n += delta) {
+		string result = "";
+		for (int i = 0; i < m; i++) {
+			B = A[i];
+			int temp = n;
+			if (currentFunction == quicksort) {
+				n = 0;
+			}
+			start = clock();
+			currentFunction(B, n, n-1);
+			durations.push_back((((clock() - start) / (double)CLOCKS_PER_SEC)) * 1000);
+			n = temp;
+		}
+		double sum = 0;
+		for (int i = 0; i < m; i++) {
+			sum += durations[i];
+		}
+		double average = (sum / (double)m);
+		result += "Average running time in ms, alg 2, with input size " + to_string(n) + ": " + to_string(average) + "\n";
+		vector<double>().swap(durations);   // clear durations
+	}//end n for
+	result += "---------------------------------------------------\n";
+	return result;
 }
 
 //insertion sort
-void INSERTION_SORT(vector<int> &A, int n) {
+void insertionSort(vector<int> &A, int n, int trash) {
+	trash.clear();
 	for (int j = 1; j < n; j++) {
 		int key = A[j];
 		int i = j - 1;
@@ -139,8 +105,9 @@ void INSERTION_SORT(vector<int> &A, int n) {
 	}//end for
 }
 
-//selection sort
-void selectionSort(vector<int> &A, int n) {
+//selection sort (TO-DO)
+void selectionSort(vector<int> &A, int n, int trash) {
+	trash.clear();
 	for (int i = 0; i <= n - 2; i++) //i in 0 to n - 2
 	{
 		int maxIndex = i;
@@ -153,21 +120,21 @@ void selectionSort(vector<int> &A, int n) {
 			swap(A[i], A[maxIndex]);
 		}//end j for
 	}// end i for
-	return a;
 }
 
 //heap sort
-void HEAPSORT(vector<int> &A, int n) {
-	BUILD_MAX_HEAP(A, n);
+void heapsort(vector<int> &A, int n, int trash) {
+	trash.clear();
+	buildMaxHeap(A, n);
 	for (int i = n - 1; i >= 0; i--) {
 		swap(A[0], A[i]);
 		n--;
-		MAX_HEAPIFY(A, 0, n);
+		maxHeapify(A, 0, n);
 	}
 }
-void MAX_HEAPIFY(vector<int> &A, int i, int n) {
-	int l = LEFT(i);
-	int r = RIGHT(i);
+void maxHeapify(vector<int> &A, int i, int n) {
+	int l = left(i);
+	int r = right(i);
 	int largest;
 	if (l < n && A[l] > A[i]) {
 		largest = l;
@@ -180,33 +147,33 @@ void MAX_HEAPIFY(vector<int> &A, int i, int n) {
 	}
 	if (largest != i) {
 		swap(A[i], A[largest]);
-		MAX_HEAPIFY(A, largest, n);
+		maxHeapify(A, largest, n);
 	}
 }
-void BUILD_MAX_HEAP(vector<int> &A, int n) {
+void buildMaxHeap(vector<int> &A, int n) {
 	for (int i = floor(n / 2); i >= 0; i--) {
-		MAX_HEAPIFY(A, i, n);
+		maxHeapify(A, i, n);
 	}
 }
-int PARENT(int i) {
+int parent(int i) {
 	return floor(i / 2);
 }
-int LEFT(int i) {
+int left(int i) {
 	return (2 * i) + 1;
 }
-int RIGHT(int i) {
+int right(int i) {
 	return (2 * i) + 2;
 }
 
 //quick sort
-void QUICKSORT(vector<int> &A, int left, int right) {
+void quicksort(vector<int> &A, int left, int right) {
 	if (left < right) {
-		int q = PARTITION(A, left, right);
-		QUICKSORT(A, left, q - 1);
-		QUICKSORT(A, q + 1, right);
+		int q = partition(A, left, right);
+		quicksort(A, left, q - 1);
+		quicksort(A, q + 1, right);
 	} //end if
 }
-int PARTITION(vector<int> &A, int p, int r) {
+int partition(vector<int> &A, int p, int r) {
 	int x = A[r];
 	int i = p - 1;
 	for (int j = p; j <= r - 1; j++) {
