@@ -1,4 +1,4 @@
-//TO-DO: selection sort, user decides input sizes, error catching
+//TODO: output function name, parameter editing, error catching
 
 //This program compares the running time of 4 different sorting algorithms at input sizes n ranging from
 //1000 to 20000. The numbers to be sorted are generated using the rand() function and stored in a two dimensional
@@ -15,7 +15,7 @@
 
 using namespace std;
 
-string measure(vector<vector<int>> &, vector<int> &, void (*currentFunction)(vector<int> &, int, int), int, int, int, int);
+void measure(vector<vector<int>> &, vector<int> &, void (*currentFunction)(vector<int> &, int, int), int, int, int, int);
 int partition(vector<int> &, int, int);
 void selectionSort(vector<int> &, int, int);
 void quicksort(vector<int> &, int, int);
@@ -38,47 +38,61 @@ int main() {
 	vector<int> currentSim;
 	bool exit = false;
 
-	parameterMenu(nStart, nFinish, delta, m,);
+	parameterMenu(nStart, nFinish, delta, m);
+	fillArray(master, m, nFinish);
 	
 	//main menu
-	system("cls");
-	cout << "Sorting Algorithms Tester v1.1\n";
-	cout << "******************************\n\n";
-	cout << "Select an algorithm to test\n";
-	cout << "1: Insertion sort\n";
-	cout << "2: Selection sort\n";
-	cout << "3: Heapsort\n";
-	cout << "4: Quicksort\n";
-	cout << "5: View or edit parameters\n";
-	cout << "6: Exit\n\n";	
-	
-	int choice = 0;
-	cout << "Enter choice: ";
-	cin >> choice;
-	
-	string output = "";
-	//void (*currentFunction)(vector<int> &, int, int);
-	switch (choice) {
-		case 1:
-			//currentFunction = insertionSort;
-			output = measure(master, currentSim, insertionSort, nStart, nFinish, delta, m);
-			cout << output << endl;
-			break;
-		case 2:
-			break;
-		case 3:
-			break;
-		case 4:
-			break;
-		case 5:
-			break;
-		case 6:
-			break;
-		default:
-			cout << "Invalid choice. Please try again.\n";
-	}
-	
-	
+	while (!exit) {
+		system("cls");
+		cout << "Sorting Algorithms Tester v1.1\n";
+		cout << "******************************\n\n";
+		cout << "Select an algorithm to test\n\n";
+		cout << "1: Insertion sort\n";
+		cout << "2: Selection sort\n";
+		cout << "3: Heapsort\n";
+		cout << "4: Quicksort\n";
+		cout << "5: View or edit parameters\n";
+		cout << "6: Exit\n\n";	
+		
+		int choice = 0;
+		cout << "Enter choice: ";
+		cin >> choice;
+		
+		string output = "";
+		switch (choice) {
+			case 1:
+				cout << endl;
+				measure(master, currentSim, insertionSort, nStart, nFinish, delta, m);
+				cout << endl;
+				system("pause");
+				break;
+			case 2:
+				cout << endl;
+				measure(master, currentSim, selectionSort, nStart, nFinish, delta, m);
+				cout << endl;
+				system("pause");
+				break;
+			case 3:
+				cout << endl;
+				measure(master, currentSim, heapsort, nStart, nFinish, delta, m);
+				cout << endl;
+				system("pause");
+				break;
+			case 4:
+				cout << endl;
+				measure(master, currentSim, quicksort, nStart, nFinish, delta, m);
+				cout << endl;
+				system("pause");
+				break;
+			case 5:
+				break;
+			case 6:
+				exit = true;
+				break;
+			default:
+				cout << "Invalid choice. Please try again.\n";
+		}
+	}//end main menu while 
 	
 	
 	return 0;
@@ -87,8 +101,9 @@ int main() {
 void parameterMenu(int &nStart, int &nFinish, int &delta, int &m) {
 	string input = "";
 	system("cls");
-	cout << "Welcome to the Sorting Algorithms Tester v1.1.\nTo begin, let's set up the parameters of the simulation.\n";
-	cout << "********************************************************************************************************\n\n";
+	cout << "Welcome to the Sorting Algorithms Tester v1.1.\n";
+	cout << "To begin, let's set up the parameters of the simulation.\n";
+	cout << "********************************************************\n\n";
 	cout << "Please enter the lower limit of the input sizes, or just press enter for default value (1000): ";
 	getline(cin, input);
 	stringstream a(input);
@@ -127,6 +142,7 @@ void parameterMenu(int &nStart, int &nFinish, int &delta, int &m) {
 	}
 
 	cout << "\nAll parameters have been set! Going to main menu.\n";
+	system("pause");
 }
 
 //populate master array
@@ -141,20 +157,19 @@ void fillArray(vector<vector<int>> &master, int m, int nFinish) {
 }
 
 //measure
-string measure(vector<vector<int>> &A, vector<int> &B, void (*currentFunction)(vector<int> &, int, int), int nStart, int nFinish, int delta, int m) {
+void measure(vector<vector<int>> &A, vector<int> &B, void (*currentFunction)(vector<int> &, int, int), int nStart, int nFinish, int delta, int m) {
 	vector<double> durations;
 	clock_t start;
-	string result = "";
 	
 	for (int n = nStart; n <= nFinish; n += delta) {
 		for (int i = 0; i < m; i++) {
 			B = A[i];
 			int temp = n;
-			if (currentFunction == quicksort) {
+			if ((*currentFunction) == quicksort) {
 				n = 0;
 			}
 			start = clock();
-			currentFunction(B, n, n-1);
+			currentFunction(B, n, temp-1);
 			durations.push_back((((clock() - start) / (double)CLOCKS_PER_SEC)) * 1000);
 			n = temp;
 		}
@@ -163,11 +178,9 @@ string measure(vector<vector<int>> &A, vector<int> &B, void (*currentFunction)(v
 			sum += durations[i];
 		}
 		double average = (sum / (double)m);
-		result += "Average running time in ms, alg 2, with input size " + to_string(n) + ": " + to_string(average) + "\n";
+		cout << "Average running time in ms, function name, with input size " << n << ": " << average << "\n";
 		vector<double>().swap(durations);   // clear durations
 	}//end n for
-	result += "---------------------------------------------------\n";
-	return result;
 }
 
 //insertion sort
