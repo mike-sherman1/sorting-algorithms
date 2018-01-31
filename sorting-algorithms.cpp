@@ -11,10 +11,11 @@
 #include <ctime>
 #include <iomanip>
 #include <string>
+#include <sstream>
 
 using namespace std;
 
-string measure(vector<vector<int>> &A, vector<int> &B, void (*currentFunction)(vector<int> &, int, int), int nStart, int nFinish, int delta, int m);
+string measure(vector<vector<int>> &, vector<int> &, void (*currentFunction)(vector<int> &, int, int), int, int, int, int);
 int partition(vector<int> &, int, int);
 void selectionSort(vector<int> &, int);
 void quicksort(vector<int> &, int, int);
@@ -25,6 +26,8 @@ void maxHeapify(vector<int> &, int, int);
 int parent(int);
 int left(int);
 int right(int);
+void fillArray(vector<vector<int>> &, int, int);
+void parameterMenu(int &, int &, int &, int &);
 
 int main() {	
 	int nStart = 1000;
@@ -33,21 +36,73 @@ int main() {
 	int m = 10;
 	vector<vector<int>> master;
 	vector<int> currentSim;
-	string result = "";
+	string output = "";
 	bool exit = false;
 
-	//main menu
-	cout << "Welcome to the sorting algorithms tester v1.1.\nTo begin, let's set up the parameters of the simulations.\n\n";
-	cout << "Please enter the lower limit of the input size, or just press enter for default value (1000): ";
-	//if no input entered, keep default 
-	cin >> nStart;
+
 	
-	while (!exit) {
-		 
+	//main menu
+	system("cls");
+	int choice;
+	cout << "Sorting Algorithms Tester v1.1\n";
+	cout << "******************************\n\n";
+	cout << "Select an algorithm to test\n";
+	cout << "1: Insertion sort\n";
+	cout << "2: Selection sort\n";
+	cout << "3: Heapsort\n";
+	cout << "4: Quicksort\n";
+	cout << "5: View or edit parameters\n";
+	cout << "6: Exit\n";	
+	
+	
+	
+	
+	return 0;
+}
+
+void parameterMenu(int &nStart, int &nFinish, int &delta, int &m) {
+	string input = "";
+	system("cls");
+	cout << "Welcome to the Sorting Algorithms Tester v1.1.\nTo begin, let's set up the parameters of the simulation.\n";
+	cout << "********************************************************************************************************\n\n";
+	cout << "Please enter the lower limit of the input sizes, or just press enter for default value (1000): ";
+	getline(cin, input);
+	stringstream a(input);
+	if (a >> nStart) {
+	} 
+	else {
+		nStart = 1000;
 	}
 	
+	cout << "Please enter the upper limit of the input sizes, or just press enter for default value (20000): ";
+	cin.clear();
+	getline(cin, input);
+	stringstream b(input);
+	if (b >> nFinish) {
+	} 
+	else {
+		nFinish = 20000;
+	}
+	
+	cout << "Please enter delta (how much you want to increment the input sizes by), or just press enter for default value (1000): ";
+	getline(cin, input);
+	stringstream c(input);
+	if (c >> delta) {
+	} 
+	else {
+		delta = 1000;
+	}
+	
+	cout << "Please enter m (the number of simulations to be ran at each input size), or just press enter for default value (10): ";
+	getline(cin, input);
+	stringstream d(input);
+	if (d >> m) {
+	} 
+	else {
+		m = 10;
+	}
 
-	return 0;
+	cout << "\nAll parameters have been set! Going to main menu.\n";
 }
 
 //populate master array
@@ -65,9 +120,9 @@ void fillArray(vector<vector<int>> &master, int m, int nFinish) {
 string measure(vector<vector<int>> &A, vector<int> &B, void (*currentFunction)(vector<int> &, int, int), int nStart, int nFinish, int delta, int m) {
 	vector<double> durations;
 	clock_t start;
+	string result = "";
 	
 	for (int n = nStart; n <= nFinish; n += delta) {
-		string result = "";
 		for (int i = 0; i < m; i++) {
 			B = A[i];
 			int temp = n;
@@ -93,7 +148,6 @@ string measure(vector<vector<int>> &A, vector<int> &B, void (*currentFunction)(v
 
 //insertion sort
 void insertionSort(vector<int> &A, int n, int trash) {
-	trash.clear();
 	for (int j = 1; j < n; j++) {
 		int key = A[j];
 		int i = j - 1;
@@ -105,9 +159,8 @@ void insertionSort(vector<int> &A, int n, int trash) {
 	}//end for
 }
 
-//selection sort (TO-DO)
+//selection sort
 void selectionSort(vector<int> &A, int n, int trash) {
-	trash.clear();
 	for (int i = 0; i <= n - 2; i++) //i in 0 to n - 2
 	{
 		int maxIndex = i;
@@ -122,9 +175,8 @@ void selectionSort(vector<int> &A, int n, int trash) {
 	}// end i for
 }
 
-//heap sort
+//heapsort
 void heapsort(vector<int> &A, int n, int trash) {
-	trash.clear();
 	buildMaxHeap(A, n);
 	for (int i = n - 1; i >= 0; i--) {
 		swap(A[0], A[i]);
@@ -165,7 +217,7 @@ int right(int i) {
 	return (2 * i) + 2;
 }
 
-//quick sort
+//quicksort
 void quicksort(vector<int> &A, int left, int right) {
 	if (left < right) {
 		int q = partition(A, left, right);
