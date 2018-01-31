@@ -1,4 +1,4 @@
-//TODO: output function name, parameter editing, error catching
+//TODO: output function name, parameter editing, error catching, formatting, README
 
 //This program compares the running time of 4 different sorting algorithms at input sizes n ranging from
 //1000 to 20000. The numbers to be sorted are generated using the rand() function and stored in a two dimensional
