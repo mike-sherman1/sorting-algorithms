@@ -17,11 +17,11 @@ using namespace std;
 
 string measure(vector<vector<int>> &, vector<int> &, void (*currentFunction)(vector<int> &, int, int), int, int, int, int);
 int partition(vector<int> &, int, int);
-void selectionSort(vector<int> &, int);
+void selectionSort(vector<int> &, int, int);
 void quicksort(vector<int> &, int, int);
-void insertionSort(vector<int> &, int);
+void insertionSort(vector<int> &, int, int);
 void buildMaxHeap(vector<int> &, int);
-void heapsort(vector<int> &, int);
+void heapsort(vector<int> &, int, int);
 void maxHeapify(vector<int> &, int, int);
 int parent(int);
 int left(int);
@@ -36,14 +36,12 @@ int main() {
 	int m = 10;
 	vector<vector<int>> master;
 	vector<int> currentSim;
-	string output = "";
 	bool exit = false;
 
-
+	parameterMenu(nStart, nFinish, delta, m,);
 	
 	//main menu
 	system("cls");
-	int choice;
 	cout << "Sorting Algorithms Tester v1.1\n";
 	cout << "******************************\n\n";
 	cout << "Select an algorithm to test\n";
@@ -52,7 +50,33 @@ int main() {
 	cout << "3: Heapsort\n";
 	cout << "4: Quicksort\n";
 	cout << "5: View or edit parameters\n";
-	cout << "6: Exit\n";	
+	cout << "6: Exit\n\n";	
+	
+	int choice = 0;
+	cout << "Enter choice: ";
+	cin >> choice;
+	
+	string output = "";
+	//void (*currentFunction)(vector<int> &, int, int);
+	switch (choice) {
+		case 1:
+			//currentFunction = insertionSort;
+			output = measure(master, currentSim, insertionSort, nStart, nFinish, delta, m);
+			cout << output << endl;
+			break;
+		case 2:
+			break;
+		case 3:
+			break;
+		case 4:
+			break;
+		case 5:
+			break;
+		case 6:
+			break;
+		default:
+			cout << "Invalid choice. Please try again.\n";
+	}
 	
 	
 	
