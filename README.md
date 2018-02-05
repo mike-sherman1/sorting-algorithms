@@ -1,1 +1,1 @@
-# sorting-algorithms
+# Sorting Algorithms Tester
