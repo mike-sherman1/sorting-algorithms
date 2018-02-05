@@ -1,4 +1,4 @@
-//TODO: fix double enter on parameter inputs, error catching, refactoring and commenting, README
+//TODO: fix double enter on parameter inputs, error catching, refactoring and commenting
 
 /*
 This program compares the running time of 4 different sorting algorithms at input sizes n ranging, by default,
