@@ -40,67 +40,76 @@ int main() {
 	int delta = 1000;
 	int m = 10;
 
-	//initialize program parameters
-	parameterMenu(nStart, nFinish, delta, m);
-	vector<vector<int>> master = fillArray(m, nFinish);
-	system("pause");
-	
-	//main menu
-	bool exit = false;
-	while (!exit) {
-		system("cls");
-		cout << "******************************\n";
-		cout << "Sorting Algorithms Tester v1.3\n";
-		cout << "******************************\n\n";
-		cout << "Select an algorithm to test\n\n";
-		cout << "1: Insertion sort\n";
-		cout << "2: Selection sort\n";
-		cout << "3: Heapsort\n";
-		cout << "4: Quicksort\n";
-		cout << "5: View or edit parameters\n";
-		cout << "6: Exit\n\n";	
+	try {
+		//initialize program parameters
+		parameterMenu(nStart, nFinish, delta, m);
+		vector<vector<int>> master = fillArray(m, nFinish);
+		system("pause");
 		
-		int choice = 0;
-		cout << "Enter choice: ";
-		cin >> choice;
-		cin.ignore();
-		switch (choice) {
-			case 1:
-				cout << endl;
-				measure(master, insertionSort, nStart, nFinish, delta, m);
-				cout << endl;
-				system("pause");
-				break;
-			case 2:
-				cout << endl;
-				measure(master, selectionSort, nStart, nFinish, delta, m);
-				cout << endl;
-				system("pause");
-				break;
-			case 3:
-				cout << endl;
-				measure(master, heapsort, nStart, nFinish, delta, m);
-				cout << endl;
-				system("pause");
-				break;
-			case 4:
-				cout << endl;
-				measure(master, quicksort, nStart, nFinish, delta, m);
-				cout << endl;
-				system("pause");
-				break;
-			case 5:
-				parameterMenu(nStart, nFinish, delta, m);
-				system("pause");
-				master = fillArray(m, nFinish);
-				break;
-			case 6:
-				exit = true;
-				break;
-			default:
-				cout << "Invalid choice. Please try again.\n";
-		}
-	}//end main menu while 
+		//main menu
+		bool exit = false;
+		while (!exit) {
+			system("cls");
+			cout << "******************************\n";
+			cout << "Sorting Algorithms Tester v1.3\n";
+			cout << "******************************\n\n";
+			cout << "Select an algorithm to test\n\n";
+			cout << "1: Insertion sort\n";
+			cout << "2: Selection sort\n";
+			cout << "3: Heapsort\n";
+			cout << "4: Quicksort\n";
+			cout << "5: View or edit parameters\n";
+			cout << "6: Exit\n\n";	
+			
+			int choice = 0;
+			cout << "Enter choice: ";
+			cin >> choice;
+			cin.ignore();
+			switch (choice) {
+				case 1:
+					cout << endl;
+					measure(master, insertionSort, nStart, nFinish, delta, m);
+					cout << endl;
+					system("pause");
+					break;
+				case 2:
+					cout << endl;
+					measure(master, selectionSort, nStart, nFinish, delta, m);
+					cout << endl;
+					system("pause");
+					break;
+				case 3:
+					cout << endl;
+					measure(master, heapsort, nStart, nFinish, delta, m);
+					cout << endl;
+					system("pause");
+					break;
+				case 4:
+					cout << endl;
+					measure(master, quicksort, nStart, nFinish, delta, m);
+					cout << endl;
+					system("pause");
+					break;
+				case 5:
+					parameterMenu(nStart, nFinish, delta, m);
+					system("pause");
+					master = fillArray(m, nFinish);
+					break;
+				case 6:
+					exit = true;
+					break;
+				default:
+					cout << "Invalid choice. Please try again.\n";
+			}
+		}//end main menu while 
+	}//end try block
+	catch (string e) {
+		cout << "ERROR: " << e;
+	}
+	catch (...) {
+		cout << "Something went wrong. Please try again";
+	}
+	
 	//exit program
 	return 0;
 }
